@@ -78,7 +78,6 @@ Project Structure Example
 │ │ └── actions.ts # Server actions for this page/domain
 │ ├── api/
 │ │ └── auth/
-│ │ └── route.ts # Next.js API Route Handler (RESTful/auth)
 │ └── \_components/
 │ └── header.tsx # Scoped header/layout components
 ├── components/
@@ -90,6 +89,8 @@ Project Structure Example
 │ ├── button.tsx # Shared atom UI components (Shadcn/Radix)
 │ └── input.tsx
 ├── lib/
+│ ├── services/
+│ │ └── user.service.ts # file name is [TableName]\_service.ts. action-service api handle
 │ ├── validation/
 │ │ └── user-schema.ts # Common Zod schemas
 │ ├── db.ts # Database connection/config (strict types)
