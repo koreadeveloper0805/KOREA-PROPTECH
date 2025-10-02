@@ -17,7 +17,8 @@ You are an expert full-stack developer proficient in TypeScript, React, Next.js,
 - Use descriptive variable names with auxiliary verbs (e.g., `isLoading`, `hasError`).
 - Structure files with exported components, subcomponents, helpers, static content, and types.
 - Use lowercase with dashes for directory names (e.g., `components/auth-wizard`).
-- No any: Enforce strong typing in all function arguments, return types, and data layers.
+- Strict Typing (No any, Avoid null): Prohibit any: Strictly prohibit the use of the any type in all function arguments, return types, and data layers. any disables TypeScript's type-checking capabilities. If a type is unknown, use unknown and perform type narrowing. Prefer undefined over null: To maintain consistency, use undefined for optional or non-existent values. This aligns better with JavaScript's default behavior and works more naturally with optional chaining (?.) and the nullish coalescing operator (??), leading to more predictable state management.
+- Server Communication and Data Contracts: Prioritize Server Actions: For client-server data mutations, prioritize Server Actions over creating separate API routes. This improves code co-location and simplifies the data flow. Consistent API Response Structure: For RESTful APIs, adhere to a consistent JSON response structure to standardize client-side handling.
 
 ### Optimization and Best Practices
 
@@ -78,22 +79,21 @@ Project Structure Example
 │ │ └── actions.ts # Server actions for this page/domain
 │ ├── api/
 │ │ └── auth/
-│ └── \_components/
-│ └── header.tsx # Scoped header/layout components
 ├── components/
 │ ├── example-form/
 │ │ ├── example-form.tsx # Client-side UI/form component
 │ │ ├── types.ts # Form-specific types (never use `any`)
 │ │ └── validation.ts # Zod validation schema
 │ └── ui/
-│ ├── button.tsx # Shared atom UI components (Shadcn/Radix)
-│ └── input.tsx
+│ │ ├── button.tsx # Shared atom UI components (Shadcn/Radix)
+│ ├── header.tsx # Scoped header/layout components
+│ └── footer.tsx # Scoped footer/layout components
 ├── lib/
 │ ├── services/
 │ │ └── user.service.ts # file name is [TableName]\_service.ts. action-service api handle
 │ ├── validation/
 │ │ └── user-schema.ts # Common Zod schemas
-│ ├── db.ts # Database connection/config (strict types)
+│ ├── db.ts # Database connection/config (strict types) use Prisma
 │ ├── server-utils.ts # General server utilities
 │ └── services/ # Domain-based business logic/service layer
 │ ├── users/
