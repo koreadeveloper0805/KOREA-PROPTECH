@@ -20,6 +20,36 @@ You are an expert full-stack developer proficient in TypeScript, React, Next.js,
 - Strict Typing (No any, Avoid null): Prohibit any: Strictly prohibit the use of the any type in all function arguments, return types, and data layers. any disables TypeScript's type-checking capabilities. If a type is unknown, use unknown and perform type narrowing. Prefer undefined over null: To maintain consistency, use undefined for optional or non-existent values. This aligns better with JavaScript's default behavior and works more naturally with optional chaining (?.) and the nullish coalescing operator (??), leading to more predictable state management.
 - Server Communication and Data Contracts: Prioritize Server Actions: For client-server data mutations, prioritize Server Actions over creating separate API routes. This improves code co-location and simplifies the data flow. Consistent API Response Structure: For RESTful APIs, adhere to a consistent JSON response structure to standardize client-side handling.
 
+[Strict Architectural Rule: Separation of Concerns]
+
+Server Actions (actions.ts): Server Actions must act only as a controller. Their responsibility is strictly limited to:
+
+Extracting the userId or session identity.
+
+Validating input data using Zod schemas.
+
+Calling the appropriate Service function.
+
+Returning a standardized response.
+
+Service Layer (\*.service.ts): All database-related logic (Prisma queries), external API calls, and core business rules must be encapsulated within service files. Direct database access from Server Actions or React Server Components is prohibited to ensure reusability and testability.
+
+### [Data Modeling & Type Safety Rules]
+
+1. **Domain-Specific Types (`types.ts`)**:
+   - 각 도메인(예: users, posts) 폴더 내에 `types.ts`를 작성하여 해당 도메인의 모든 데이터 규격을 정의합니다.
+   - **Base Entities**: Prisma 모델을 확장하거나 `Pick`/`Omit`을 사용하여 핵심 엔티티 타입을 정의합니다.
+   - **Service DTOs**: 서비스 함수의 입력/출력 타입을 정의하며, 가급적 `validation.ts`의 Zod 스키마에서 `z.infer`를 통해 추론하여 'Single Source of Truth'를 유지합니다.
+   - **Prohibit Global Bloat**: 모든 타입을 전역 `types/index.ts`에 넣지 말고, 도메인에 종속된 타입은 반드시 해당 도메인 폴더 내에서 관리합니다.
+
+2. **Validation Strategy (`validation.ts`)**:
+   - 런타임 데이터 검증을 위해 `Zod` 스키마를 정의합니다.
+   - Server Actions의 입력값 검증과 Service Layer의 데이터 보증에 동일한 스키마를 공유하여 사용합니다.
+
+3. **Layered Data Flow**:
+   - **Action**: FormData를 객체로 변환 -> Zod 검증 -> Service에 `Plain Object` 전달.
+   - **Service**: Service DTO 타입을 인자로 받음 -> DB 작업 수행 -> 결과를 엔티티 타입으로 반환.
+
 ### Optimization and Best Practices
 
 - Minimize the use of `'use client'`, `useEffect`, and `setState`; favor React Server Components (RSC) and Next.js SSR features.
@@ -89,10 +119,15 @@ Project Structure Example
 │ ├── header.tsx # Scoped header/layout components
 │ └── footer.tsx # Scoped footer/layout components
 ├── lib/
-│ ├── services/
-│ │ └── user.service.ts # file name is [TableName]\_service.ts. action-service api handle
-│ ├── validation/
-│ │ └── user-schema.ts # Common Zod schemas
+│ └── services/
+│ ├── users/
+│ │ ├── users.service.ts # DB 쿼리 및 비즈니스 로직
+│ │ ├── types.ts # 도메인 모델, DTO, 반환 타입 (No any)
+│ │ └── validation.ts # Zod 스키마 (Infer types from here)
+│ └── posts/
+│ ├── posts.service.ts
+│ ├── types.ts
+│ └── validation.ts
 │ ├── db.ts # Database connection/config (strict types) use Prisma
 │ ├── server-utils.ts # General server utilities
 │ └── services/ # Domain-based business logic/service layer
