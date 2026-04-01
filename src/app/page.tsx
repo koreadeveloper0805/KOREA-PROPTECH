@@ -985,7 +985,7 @@ export default function Home() {
                   },
                   {
                     year: "2000",
-                    text: "용산문수푸르지오 (1,176세대) 외 다수 분양대행, 시행사업 프로젝트 다수\nLandshop.co.kr",
+                    text: "용산 문수 아이파크(1,176세대) 외 다수 분양대행, 시행사업 프로젝트 다수\nLandshop.co.kr",
                     color: "#D2D9E7",
                     borderColor: "#A6B0C4",
                   },
