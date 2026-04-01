@@ -1109,8 +1109,8 @@ export default function Home() {
               </div>
             </div>
             <p className="max-w-[250px] text-[13px] leading-[1.7] text-[#64748B]">
-              정책을 읽고, 금융을 풀고, 방송으로 증명하는 데이터 민주화 플랫폼.
-              부동산의 미래를 시뮬레이션합니다.
+              정비사업 (재개발ㆍ재건축) 분얌권 프롭테크 플랫폼 을 AI 알고리즘
+              으로 완성하여 고객을위한 고객에 의한 KOREA프롭테크AI.com
             </p>
           </div>
           <div>
