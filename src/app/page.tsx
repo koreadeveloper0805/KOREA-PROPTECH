@@ -69,7 +69,7 @@ export default function Home() {
             🏗️
           </div>
           <div className="font-mono text-[13px] font-bold tracking-[1px] text-white">
-            KOREA<span className="text-[#00D9FF]">PropTech</span>AI
+            코리아<span className="text-[#00D9FF]">프롭테크</span>에이아이
           </div>
         </Link>
         <ul className="hidden list-none gap-8 lg:flex">
@@ -157,9 +157,15 @@ export default function Home() {
             <div className="animate-fadeUp flex flex-wrap gap-4 delay-300">
               <Link
                 href="#cta"
-                className="inline-flex items-center gap-2 rounded-lg bg-[#00D9FF] px-7 py-3.5 text-[14px] font-bold tracking-[0.5px] text-[#0D1117] transition-all hover:-translate-y-0.5 hover:bg-[#00f0ff] hover:shadow-[0_12px_30px_rgba(0,217,255,0.35)]"
+                className="inline-flex w-38 items-center justify-center gap-2 self-center rounded-lg bg-[#00D9FF] px-7 py-3.5 text-center text-[14px] font-bold tracking-[0.5px] text-[#0D1117] transition-all hover:-translate-y-0.5 hover:bg-[#00f0ff] hover:shadow-[0_12px_30px_rgba(0,217,255,0.35)]"
               >
-                🚀 무료로 시작하기
+                🚀 로그인
+              </Link>
+              <Link
+                href="#cta"
+                className="inline-flex w-38 items-center justify-center gap-2 self-center rounded-lg bg-[#00D9FF] px-7 py-3.5 text-center text-[14px] font-bold tracking-[0.5px] text-[#0D1117] transition-all hover:-translate-y-0.5 hover:bg-[#00f0ff] hover:shadow-[0_12px_30px_rgba(0,217,255,0.35)]"
+              >
+                영상
               </Link>
               <Link
                 href="#features"
@@ -921,96 +927,119 @@ export default function Home() {
               <span className="text-[#00D9FF]">AI의 결합</span>
             </h2>
           </div>
-          <div className="mt-12 grid grid-cols-1 items-center gap-16 md:grid-cols-[1.2fr_1fr]">
-            <div className="reveal reveal-delay-1 relative overflow-hidden rounded-[20px] border border-[#1E2A3B] bg-[#1C2333] p-10">
-              <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-[#00D9FF] to-[#8B5CF6]"></div>
-              <div className="mb-5 flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-[#1E2A3B] bg-gradient-to-br from-[#00D9FF] to-[#8B5CF6] text-[32px]">
-                👤
-              </div>
-              <div className="mb-1 text-[26px] font-bold text-white">
+          <div className="mt-12 grid grid-cols-1 items-start gap-12 md:grid-cols-[1.05fr_1fr]">
+            <div className="reveal reveal-delay-1 relative overflow-hidden rounded-[8px] border border-[#3CC9F5] bg-[#111827] p-8 md:p-10">
+              <div className="mb-2 text-[40px] leading-none font-bold tracking-[-1px] text-white md:text-[60px]">
                 윤종수
               </div>
-              <div className="mb-5 text-[13px] font-semibold text-[#00D9FF]">
+              <div className="mb-9 text-[18px] font-semibold text-[#3CC9F5] md:text-[22px]">
                 대표이사 / Founder & CEO
               </div>
-              <p className="mb-6 text-[14px] leading-[1.8] text-[#94A3B8]">
-                40년간 재개발·재건축 정비사업 현장에서 쌓은 전문성과 1.2만
-                구독자 커뮤니티 리더십을 AI 기술과 결합했습니다. KOREA부동산방송
-                운영을 통해 검증된 신뢰 자산을 플랫폼으로 전환합니다.
-              </p>
-              <div className="flex flex-wrap gap-2">
+
+              <div className="space-y-8">
                 {[
-                  { text: "재개발·재건축 40년", color: "#00D9FF" },
-                  { text: "유튜브 1.2만 구독", color: "#8B5CF6" },
-                  { text: "정비사업 전문관리", color: "#10B981" },
-                  { text: "감정평가 전문", color: "#F59E0B" },
-                ].map((badge, i) => (
-                  <span
-                    key={i}
-                    className="rounded-full border px-3 py-1.5 text-[11px] font-semibold"
-                    style={{
-                      color: badge.color,
-                      backgroundColor: `${badge.color}1A`,
-                      borderColor: `${badge.color}4D`,
-                    }}
-                  >
-                    {badge.text}
-                  </span>
+                  {
+                    title: "40년 현장 경력",
+                    desc: "재개발·재건축 정비사업 전문가",
+                  },
+                  {
+                    title: "1.2만 커뮤니티 리더",
+                    desc: "KOREA부동산방송 유튜브 운영",
+                  },
+                  {
+                    title: "AI 데이터 융합",
+                    desc: "현장 감각 + 기술 접목 선도",
+                  },
+                  {
+                    title: "전문 자격",
+                    desc: "감정평가사 / 정비사업 전문관리업",
+                  },
+                ].map((item, i) => (
+                  <div key={i}>
+                    <div className="mb-2 flex items-center gap-3 text-[19px] font-bold text-white md:text-[24px]">
+                      <span className="text-[22px] leading-none text-[#E2E8F0]">
+                        ☑
+                      </span>
+                      <span>{item.title}</span>
+                    </div>
+                    <p className="pl-9 text-[16px] leading-[1.5] text-[#8FA0B5] md:text-[20px]">
+                      {item.desc}
+                    </p>
+                  </div>
                 ))}
               </div>
             </div>
 
-            <div className="reveal reveal-delay-2 flex flex-col gap-4">
-              {[
-                {
-                  year: "1985",
-                  text: "정비사업 실무 시작 — 업계 입문",
-                  color: "#00D9FF",
-                },
-                {
-                  year: "2005",
-                  text: "부산 북구 재개발 프로젝트 총괄 (1,200세대)",
-                  color: "#10B981",
-                },
-                {
-                  year: "2015",
-                  text: "KOREA부동산방송 유튜브 채널 개설",
-                  color: "#00D9FF",
-                },
-                {
-                  year: "2022",
-                  text: "구독자 1만 돌파 · AI 데이터 플랫폼 구상 시작",
-                  color: "#8B5CF6",
-                },
-                {
-                  year: "2024",
-                  text: "KOREA PropTech AI 법인 설립",
-                  color: "#10B981",
-                },
-                {
-                  year: "2025",
-                  text: "Seed Round 10억 · 앱 정식 론칭 예정",
-                  color: "#F59E0B",
-                  last: true,
-                },
-              ].map((t, i) => (
-                <div key={i} className="relative flex items-start gap-4">
-                  <div
-                    className="relative z-10 mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: t.color }}
-                  >
-                    {!t.last && (
-                      <div className="absolute top-2.5 left-[4px] h-[30px] w-[2px] bg-[#1E2A3B]"></div>
-                    )}
+            <div className="reveal reveal-delay-2">
+              <h3 className="text-[30px] font-bold tracking-[-0.5px] text-white md:text-[44px]">
+                주요 성과 & 이력
+              </h3>
+
+              <div className="mt-8 flex flex-col">
+                {[
+                  {
+                    year: "1983",
+                    text: "부동산사업 실무 시작",
+                    color: "#7C8CA7",
+                    borderColor: "#7C8CA7",
+                  },
+                  {
+                    year: "2000",
+                    text: "용산문수푸르지오 (1,176세대) 외 다수 분양대행, 시행사업 프로젝트 다수\nLandshop.co.kr",
+                    color: "#D2D9E7",
+                    borderColor: "#A6B0C4",
+                  },
+                  {
+                    year: "2014",
+                    text: "분양권투유.com 개설",
+                    color: "#53CCF5",
+                    borderColor: "#53CCF5",
+                  },
+                  {
+                    year: "2019",
+                    text: "망미2구역조합장 출마\n구독자 1만 돌파 / AI 데이터 플랫폼 구상",
+                    color: "#5AC8F8",
+                    borderColor: "#5AC8F8",
+                  },
+                  {
+                    year: "2025",
+                    text: "KOREA PropTech AI 개인사업 설립",
+                    color: "#5BC68E",
+                    borderColor: "#5BC68E",
+                  },
+                  {
+                    year: "2026",
+                    text: "시드 투자 유치 → 앱 정식 론칭 예정",
+                    color: "#E9B94C",
+                    borderColor: "#E9B94C",
+                    last: true,
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="relative flex gap-5 pb-8 last:pb-0">
+                    <div className="relative flex w-8 shrink-0 justify-center">
+                      <div
+                        className="relative z-10 mt-1 h-6 w-6 rounded-full border"
+                        style={{
+                          backgroundColor: item.color,
+                          borderColor: item.borderColor,
+                        }}
+                      ></div>
+                      {!item.last && (
+                        <div className="absolute top-7 h-[calc(100%+10px)] w-px bg-[#25324A]"></div>
+                      )}
+                    </div>
+                    <div
+                      className="w-[76px] shrink-0 text-[26px] leading-none font-bold tracking-[-0.5px] md:text-[40px]"
+                      style={{ color: item.color }}
+                    >
+                      {item.year}
+                    </div>
+                    <p className="pt-1 pl-8 text-[18px] leading-[1.35] font-semibold whitespace-pre-line text-[#E2E8F0] md:text-[25px]">
+                      {item.text}
+                    </p>
                   </div>
-                  <div className="w-10 shrink-0 font-mono text-[11px] text-[#64748B]">
-                    {t.year}
-                  </div>
-                  <div className="text-[13px] leading-[1.6] text-[#E2E8F0]">
-                    {t.text}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -1031,7 +1060,7 @@ export default function Home() {
             <br />
             고객에 의한
             <br />
-            <span className="text-[#00D9FF]">KOREA PropTech AI"</span>
+            <span className="text-[#00D9FF]">코리아프롭테크에이아이"</span>
           </h2>
           <p className="mb-10 text-[16px] leading-[1.8] text-[#94A3B8]">
             정비사업(원석) → 분양권(가공석) → 기축 관리(완성석)
@@ -1076,7 +1105,7 @@ export default function Home() {
                 🏗️
               </div>
               <div className="font-mono text-[13px] font-bold tracking-[1px] text-white">
-                KOREA<span className="text-[#00D9FF]">PropTech</span>AI
+                코리아<span className="text-[#00D9FF]">프롭테크</span>에이아이
               </div>
             </div>
             <p className="max-w-[250px] text-[13px] leading-[1.7] text-[#64748B]">
@@ -1148,7 +1177,7 @@ export default function Home() {
           </div>
         </div>
         <div className="mx-auto mt-10 flex max-w-[1200px] items-center justify-between border-t border-[#1E2A3B] pt-6 text-[12px] text-[#64748B]">
-          <span>© 2025 KOREA PropTech AI. All rights reserved.</span>
+          <span>© 2025 코리아프롭테크에이아이. All rights reserved.</span>
           <span className="font-mono text-[11px] text-[#00D9FF]">
             koreaproptech.ai
           </span>
