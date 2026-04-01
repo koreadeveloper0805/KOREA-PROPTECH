@@ -1144,7 +1144,11 @@ export default function Home() {
               {["소개", "팀", "IR 자료", "뉴스룸", "채용"].map((link) => (
                 <li key={link}>
                   <Link
-                    href="#"
+                    href={
+                      link === "IR 자료"
+                        ? "https://docs.google.com/presentation/d/1DAOZ6leeLO_XxdqiKnS-vo05feOSpiyK/edit?usp=sharing&ouid=114275917701421007940&rtpof=true&sd=true"
+                        : "#"
+                    }
                     className="text-[13px] text-[#64748B] transition-colors hover:text-[#00D9FF]"
                   >
                     {link}
