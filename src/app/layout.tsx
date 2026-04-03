@@ -23,6 +23,15 @@ const bebasNeue = Bebas_Neue({
 export const metadata: Metadata = {
   title: "KOREA PropTech AI — 부동산의 미래를 시뮬레이션합니다",
   description: "데이터 민주화 플랫폼",
+  icons: {
+    icon: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({

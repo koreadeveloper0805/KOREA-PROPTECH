@@ -69,7 +69,7 @@ export default function Home() {
             🏗️
           </div>
           <div className="font-mono text-[13px] font-bold tracking-[1px] text-white">
-            코리아<span className="text-[#00D9FF]">프롭테크</span>에이아이
+            KOREA<span className="text-[#00D9FF]">프롭테크</span>AI
           </div>
         </Link>
         <ul className="hidden list-none gap-8 lg:flex">
@@ -134,7 +134,7 @@ export default function Home() {
           <div className="text-left">
             <div className="animate-fadeUp mb-6 inline-flex items-center gap-2 rounded-full border border-[#00D9FF]/30 bg-[#00D9FF]/10 px-4 py-1.5 text-[12px] font-bold tracking-[1px] text-[#00D9FF]">
               <span className="animate-pulse-custom h-1.5 w-1.5 rounded-full bg-[#00D9FF]"></span>
-              SEED ROUND 2025 · KOREA PropTech AI
+              SEED ROUND 2025 · KOREA PROPTECH AI
             </div>
             <h1 className="font-bebas animate-fadeUp mb-4 text-[clamp(52px,6vw,80px)] leading-none tracking-[2px] text-white delay-100">
               <span className="text-[#00D9FF]">부동산의</span>
@@ -157,13 +157,13 @@ export default function Home() {
             <div className="animate-fadeUp flex flex-wrap gap-4 delay-300">
               <Link
                 href="#cta"
-                className="inline-flex w-38 items-center justify-center gap-2 self-center rounded-lg bg-[#00D9FF] px-7 py-3.5 text-center text-[14px] font-bold tracking-[0.5px] text-[#0D1117] transition-all hover:-translate-y-0.5 hover:bg-[#00f0ff] hover:shadow-[0_12px_30px_rgba(0,217,255,0.35)]"
+                className="inline-flex w-38 items-center justify-center gap-2 self-center rounded-lg border border-[#1E2A3B] bg-transparent px-7 py-3.5 text-[14px] font-semibold text-[#E2E8F0] transition-all hover:-translate-y-0.5 hover:border-[#00D9FF] hover:text-[#00D9FF]"
               >
                 🚀 로그인
               </Link>
               <Link
                 href="#cta"
-                className="inline-flex w-38 items-center justify-center gap-2 self-center rounded-lg bg-[#00D9FF] px-7 py-3.5 text-center text-[14px] font-bold tracking-[0.5px] text-[#0D1117] transition-all hover:-translate-y-0.5 hover:bg-[#00f0ff] hover:shadow-[0_12px_30px_rgba(0,217,255,0.35)]"
+                className="inline-flex w-38 items-center justify-center gap-2 self-center rounded-lg border border-[#1E2A3B] bg-transparent px-7 py-3.5 text-[14px] font-semibold text-[#E2E8F0] transition-all hover:-translate-y-0.5 hover:border-[#00D9FF] hover:text-[#00D9FF]"
               >
                 영상
               </Link>
@@ -985,7 +985,7 @@ export default function Home() {
                   },
                   {
                     year: "2000",
-                    text: "용산 문수 아이파크(1,176세대) 외 다수 분양대행, 시행사업 프로젝트 다수\nLandshop.co.kr",
+                    text: "울산 문수 아이파크(1,176세대) 외 다수 분양대행, 시행사업 프로젝트 다수\nKorea PropTech AI",
                     color: "#D2D9E7",
                     borderColor: "#A6B0C4",
                   },
@@ -1060,7 +1060,7 @@ export default function Home() {
             <br />
             고객에 의한
             <br />
-            <span className="text-[#00D9FF]">코리아프롭테크에이아이"</span>
+            <span className="text-[#00D9FF]">KOREA 프롭테크 AI"</span>
           </h2>
           <p className="mb-10 text-[16px] leading-[1.8] text-[#94A3B8]">
             정비사업(원석) → 분양권(가공석) → 기축 관리(완성석)
@@ -1068,13 +1068,13 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
-              href="mailto:seed@koreaproptech.ai"
-              className="inline-flex items-center gap-2 rounded-lg bg-[#00D9FF] px-7 py-3.5 text-[14px] font-bold tracking-[0.5px] text-[#0D1117] transition-all hover:-translate-y-0.5 hover:bg-[#00f0ff] hover:shadow-[0_12px_30px_rgba(0,217,255,0.35)]"
+              href="mailto:k-consultant@naver.com"
+              className="inline-flex items-center gap-2 rounded-lg border border-[#1E2A3B] bg-transparent px-7 py-3.5 text-[14px] font-semibold text-[#E2E8F0] transition-all hover:-translate-y-0.5 hover:border-[#00D9FF] hover:text-[#00D9FF]"
             >
               🚀 앱 사전 등록
             </Link>
             <Link
-              href="mailto:seed@koreaproptech.ai"
+              href="mailto:k-consultant@naver.com"
               className="inline-flex items-center gap-2 rounded-lg border border-[#1E2A3B] bg-transparent px-7 py-3.5 text-[14px] font-semibold text-[#E2E8F0] transition-all hover:-translate-y-0.5 hover:border-[#00D9FF] hover:text-[#00D9FF]"
             >
               💼 투자 문의
@@ -1083,10 +1083,10 @@ export default function Home() {
           <p className="mt-10 text-[13px] text-[#64748B]">
             문의:{" "}
             <a
-              href="mailto:seed@koreaproptech.ai"
+              href="mailto:k-consultant@naver.com"
               className="text-[#00D9FF] no-underline hover:underline"
             >
-              seed@koreaproptech.ai
+              k-consultant@naver.com
             </a>{" "}
             &nbsp;|&nbsp; 유튜브:{" "}
             <a href="#" className="text-[#00D9FF] no-underline hover:underline">
@@ -1105,7 +1105,7 @@ export default function Home() {
                 🏗️
               </div>
               <div className="font-mono text-[13px] font-bold tracking-[1px] text-white">
-                코리아<span className="text-[#00D9FF]">프롭테크</span>에이아이
+                KOREA<span className="text-[#00D9FF]">프롭테크</span>AI
               </div>
             </div>
             <p className="max-w-[250px] text-[13px] leading-[1.7] text-[#64748B]">
@@ -1163,7 +1163,7 @@ export default function Home() {
             </h4>
             <ul className="flex flex-col gap-2">
               {[
-                "seed@koreaproptech.ai",
+                "k-consultant@naver.com",
                 "KOREA부동산방송 유튜브",
                 "투자 문의",
                 "파트너십",
@@ -1181,7 +1181,7 @@ export default function Home() {
           </div>
         </div>
         <div className="mx-auto mt-10 flex max-w-[1200px] items-center justify-between border-t border-[#1E2A3B] pt-6 text-[12px] text-[#64748B]">
-          <span>© 2025 코리아프롭테크에이아이. All rights reserved.</span>
+          <span>© 2025 KOREA프롭테크AI. All rights reserved.</span>
           <span className="font-mono text-[11px] text-[#00D9FF]">
             koreaproptech.ai
           </span>
