@@ -140,6 +140,32 @@ body::before {
   animation: ticker 30s linear infinite;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blinkTeal {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.animate-fade-in { animation: fadeIn 0.3s ease both; }
+.animate-fade-in-right { animation: fadeInRight 0.3s ease both; }
+.animate-fade-in-up { animation: fadeInUp 0.4s ease both; }
+.animate-blink-teal { animation: blinkTeal 2s infinite; }
+.animate-blink-teal-fast { animation: blinkTeal 1s infinite; }
+
 .delay-100 {
   animation-delay: 0.1s;
 }

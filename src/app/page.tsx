@@ -1,11 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+
+interface AdData {
+  zone: string;
+  adv: string;
+  cpc: number;
+  title: string;
+  desc: string;
+  cta: string;
+  tags: string[];
+}
+
+const AD_DB: Record<string, AdData> = {
+  광안: { zone: "광안 A구역", adv: "○○공인중개사", cpc: 1000, title: "이 구역 급매물 3건 보유 중", desc: "광안 A구역 전담 10년 경력 · 현재 급매 3건<br/>전매 가능 분양권 즉시 확인 가능", cta: "📞 지금 바로 무료 상담", tags: ["급매", "전매가능", "조합원물건"] },
+  문현: { zone: "문현 1구역", adv: "△△분양센터", cpc: 1000, title: "OO레이카운티 잔여세대 12세대", desc: "문현 1구역 재개발 분양권 전문<br/>잔여세대 실물 확인 · 전매 가능 안내", cta: "🏠 잔여세대 즉시 확인", tags: ["분양권", "잔여세대", "전매가능"] },
+  마포: { zone: "마포·용산·성동", adv: "□□부동산컨설팅", cpc: 3000, title: "마용성 재개발 전문 컨설팅 10년", desc: "서울 핵심 정비구역 투자 전략 무료 상담<br/>비례율·분담금 정밀 분석 제공", cta: "📋 투자전략 무료 상담", tags: ["서울", "마용성", "전문컨설팅"] },
+};
+
+const AD_DELAY_SECONDS = 60;
 
 export default function Home() {
   const [navShadow, setNavShadow] = useState(false);
   const [activeHash, setActiveHash] = useState("");
+
+  // ── Ad System States ──
+  const [isPortalOpen, setIsPortalOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [adState, setAdState] = useState<"idle" | "pending" | "matched">("idle");
+  const [countdown, setCountdown] = useState(0);
+  const [currentAd, setCurrentAd] = useState<AdData | undefined>(undefined);
+  const [popupProgress, setPopupProgress] = useState(100);
+  const [sysToast, setSysToast] = useState("");
+  const [chargeToast, setChargeToast] = useState("");
+  const [liveFeeds, setLiveFeeds] = useState<{ id: number; type: string; txt: string }[]>([]);
+
+  // Timer refs
+  const countdownTimer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const popupTimer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const feedIdCounter = useRef(0);
 
   useEffect(() => {
     // Scroll reveal observer
@@ -44,6 +78,91 @@ export default function Home() {
       window.removeEventListener("scroll", handleScroll);
       observer.disconnect();
     };
+  }, []);
+
+  // ── Ad System Functions ──
+  const pushFeed = (type: string, txt: string) => {
+    setLiveFeeds((prev) =>
+      [{ id: ++feedIdCounter.current, type, txt }, ...prev].slice(0, 4)
+    );
+  };
+
+  const showSystemToast = (msg: string) => {
+    setSysToast(msg);
+    setTimeout(() => setSysToast(""), 3000);
+  };
+
+  const cancelAd = () => {
+    if (countdownTimer.current) clearInterval(countdownTimer.current);
+    if (popupTimer.current) clearInterval(popupTimer.current);
+    setAdState("idle");
+  };
+
+  const fireAd = (ad: AdData) => {
+    setAdState("matched");
+    setPopupProgress(100);
+    showSystemToast(`🧠 AI 분석 완료 → ${ad.zone} 전문 광고 연결`);
+    pushFeed("click", `<strong>${ad.zone}</strong> 전문 광고 노출 — ${ad.adv}`);
+    if (popupTimer.current) clearInterval(popupTimer.current);
+    popupTimer.current = setInterval(() => {
+      setPopupProgress((prev) => {
+        if (prev <= 0) {
+          clearInterval(popupTimer.current);
+          setAdState("idle");
+          return 0;
+        }
+        return prev - 100 / 300;
+      });
+    }, 100);
+  };
+
+  const handleSearch = (kw: string) => {
+    if (!kw.trim()) return;
+    setSearchInput(kw);
+    let match = AD_DB["광안"];
+    for (const key in AD_DB) {
+      if (kw.includes(key)) { match = AD_DB[key]; break; }
+    }
+    setCurrentAd(match);
+    setAdState("pending");
+    setCountdown(AD_DELAY_SECONDS);
+    showSystemToast(`🔍 '${kw}' AI 분석 시작 → 전문 광고 매칭 대기 중`);
+    pushFeed("search", `<strong>'${kw}'</strong> 검색 · AI 분석 중`);
+    if (countdownTimer.current) clearInterval(countdownTimer.current);
+    countdownTimer.current = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(countdownTimer.current);
+          fireAd(match);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const handleAdClick = () => {
+    cancelAd();
+    const cpc = currentAd?.cpc ?? 1000;
+    setChargeToast(`${currentAd?.adv} ₩${cpc.toLocaleString()} 과금 완료`);
+    setTimeout(() => setChargeToast(""), 3200);
+    pushFeed("click", `<strong>${currentAd?.zone}</strong> 광고 클릭 → ₩${cpc.toLocaleString()} 과금`);
+  };
+
+  // Mock Live Feed 시뮬레이션
+  useEffect(() => {
+    const autoEvents = [
+      { t: "click", txt: "<strong>광안 A구역</strong> 광고 클릭 — ○○공인중개사" },
+      { t: "search", txt: "<strong>'문현 1구역'</strong> 검색 → 광고 대기 중" },
+      { t: "charge", txt: "△△분양센터 <strong>₩30,000</strong> 자동충전" },
+    ];
+    let idx = 0;
+    const interval = setInterval(() => {
+      const ev = autoEvents[idx++ % autoEvents.length];
+      pushFeed(ev.t, ev.txt);
+    }, 6000);
+    return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Ticker items array for cleaner mapping
@@ -102,6 +221,27 @@ export default function Home() {
             </Link>
           </li>
         </ul>
+
+        {/* Ad System: 검색창 + 광고 관리 */}
+        <div className="flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2 bg-[#0c1428] border border-white/10 rounded-lg px-3 py-1.5 focus-within:border-[#4b9eff]/40 transition-colors">
+            <span className="text-[13px] text-[#3d4d6a]">🔍</span>
+            <input
+              type="text"
+              placeholder="구역·단지 검색…"
+              className="bg-transparent border-none outline-none text-[12px] w-[190px] text-[#f0f4ff] placeholder:text-[#3d4d6a]"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch(searchInput)}
+            />
+          </div>
+          <button
+            onClick={() => setIsPortalOpen(true)}
+            className="bg-transparent border border-white/10 text-[#7b8aab] text-[12px] font-semibold rounded-lg px-3.5 py-1.5 hover:border-[#00e5b4] hover:text-[#00e5b4] transition-all"
+          >
+            ⚡ 광고 관리
+          </button>
+        </div>
       </nav>
 
       {/* TICKER */}
@@ -120,6 +260,42 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* PENDING BANNER */}
+      {adState === "pending" && (
+        <div className="mx-6 lg:mx-12 mt-4 bg-gradient-to-br from-[#f5a623]/10 to-[#00e5b4]/5 border border-[#f5a623]/20 rounded-xl p-4 flex items-center gap-4 animate-fade-in">
+          <div className="w-10 h-10 rounded-lg bg-[#f5a623]/10 border border-[#f5a623]/25 flex items-center justify-center text-lg shrink-0">
+            ⚡
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[12px] font-bold text-[#c8d3f0]">
+                AI 분석 완료 후 전문 광고주 자동 연결 대기 중
+              </span>
+              <span className="text-[9px] font-extrabold tracking-wide px-2 py-0.5 rounded bg-[#00e5b4]/10 text-[#00e5b4] border border-[#00e5b4]/20">
+                AI MATCHING
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex-1 bg-white/5 rounded h-1 overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-[#f5a623] to-[#00e5b4] transition-all duration-1000 ease-linear"
+                  style={{ width: `${(countdown / AD_DELAY_SECONDS) * 100}%` }}
+                />
+              </div>
+              <span className="font-mono text-[12px] text-[#f5a623] min-w-[38px] text-right">
+                {countdown}초
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={cancelAd}
+            className="bg-transparent border border-white/10 text-[#3d4d6a] text-[10px] font-semibold rounded-md px-3 py-1.5 hover:border-[#ff4d4d]/40 hover:text-[#ff4d4d] transition-all"
+          >
+            ✕ 취소
+          </button>
+        </div>
+      )}
 
       {/* HERO */}
       <section
@@ -1187,6 +1363,132 @@ export default function Home() {
           </span>
         </div>
       </footer>
+      {/* ── GUERRILLA POPUP ── */}
+      <div
+        className={`fixed bottom-7 right-7 z-50 w-[260px] transition-all duration-500 ${
+          adState === "matched"
+            ? "translate-y-0 scale-100 opacity-100 pointer-events-auto"
+            : "translate-y-[130%] scale-95 opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="bg-gradient-to-br from-[#0e1e3c] to-[#060f1e] border border-[#f5a623]/50 rounded-2xl overflow-hidden shadow-[0_16px_60px_rgba(0,0,0,0.8),0_0_0_1px_rgba(245,166,35,0.07)] relative">
+          <div className="absolute top-[-8px] left-3.5 bg-[#03060f] border border-[#00e5b4]/35 rounded-full px-2.5 py-0.5 text-[9px] font-bold text-[#00e5b4] tracking-wide">
+            ⚡ {currentAd?.adv} · AI매칭
+          </div>
+          <div className="h-[3px] bg-[#111d38] w-full">
+            <div
+              className="h-full bg-gradient-to-r from-[#f5a623] to-[#ff9500] transition-all duration-100 ease-linear"
+              style={{ width: `${popupProgress}%` }}
+            />
+          </div>
+          <button
+            onClick={cancelAd}
+            className="absolute top-2.5 right-2.5 w-5 h-5 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-[10px] text-[#7b8aab] transition-colors z-10"
+          >
+            ✕
+          </button>
+          <div className="p-4 pt-5">
+            <div className="inline-flex items-center gap-1 text-[9px] font-extrabold tracking-wide uppercase bg-[#f5a623]/10 text-[#f5a623] border border-[#f5a623]/30 px-2 py-0.5 rounded mb-2.5">
+              ⚡ {currentAd?.zone} 전문 광고
+            </div>
+            <div className="text-[14px] font-extrabold text-white mb-1.5 leading-tight">
+              {currentAd?.title}
+            </div>
+            <div
+              className="text-[11px] text-[#7b8aab] leading-relaxed mb-2.5"
+              dangerouslySetInnerHTML={{ __html: currentAd?.desc ?? "" }}
+            />
+            <div className="flex flex-wrap gap-1 mb-3">
+              {currentAd?.tags?.map((t) => (
+                <span
+                  key={t}
+                  className="text-[9px] px-2 py-0.5 bg-[#00e5b4]/10 border border-[#00e5b4]/20 rounded text-[#00e5b4]"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+            <button
+              onClick={handleAdClick}
+              className="w-full bg-gradient-to-br from-[#f5a623] to-[#c47800] text-black font-extrabold text-[12.5px] rounded-lg py-2.5 transition-transform hover:scale-105 hover:shadow-[0_5px_18px_rgba(245,166,35,0.35)]"
+            >
+              {currentAd?.cta}
+            </button>
+            <div className="text-center mt-2 text-[9px] text-[#3d4d6a]">
+              AI 분석 완료 후 매칭된 구역 전문 광고입니다
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── SYSTEM TOAST ── */}
+      <div
+        className={`fixed top-[76px] right-5 z-[9999] bg-[#0c1428] border border-[#00e5b4]/30 rounded-lg px-4 py-2.5 text-[11px] text-[#00e5b4] flex items-center gap-2 transition-transform duration-300 shadow-xl ${
+          sysToast ? "translate-x-0" : "translate-x-[130%]"
+        }`}
+      >
+        <span>⚡</span>
+        <span>{sysToast}</span>
+      </div>
+
+      {/* ── CHARGE TOAST ── */}
+      <div
+        className={`fixed bottom-[100px] right-7 z-[9998] bg-[#0e1e3e]/95 border border-[#f5a623]/30 rounded-lg px-4 py-2.5 text-[11px] text-[#f5a623] flex items-center gap-2 transition-all duration-300 ${
+          chargeToast ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0 pointer-events-none"
+        }`}
+      >
+        <span>💳</span>
+        <span>{chargeToast}</span>
+      </div>
+
+      {/* ── LIVE FEED ── */}
+      <div className="fixed top-[76px] left-6 z-50 w-[240px] flex flex-col gap-1.5 pointer-events-none">
+        {liveFeeds.map((feed) => (
+          <div
+            key={feed.id}
+            className="bg-[#070e20]/90 border border-white/10 rounded-lg px-3 py-2 flex items-start gap-2 animate-fade-in-right"
+          >
+            <div
+              className={`w-1.5 h-1.5 rounded-full shrink-0 mt-1 ${
+                feed.type === "click"
+                  ? "bg-[#00e5b4]"
+                  : feed.type === "charge"
+                    ? "bg-[#f5a623]"
+                    : "bg-[#4b9eff]"
+              }`}
+            />
+            <div
+              className="text-[11px] text-[#7b8aab] leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: feed.txt }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* ── PORTAL MODAL ── */}
+      {isPortalOpen && (
+        <div
+          className="fixed inset-0 z-[900] bg-[#03060f]/75 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={(e) => e.target === e.currentTarget && setIsPortalOpen(false)}
+        >
+          <div className="bg-[#070e20] border border-white/10 rounded-2xl w-full max-w-[780px] max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-in-up">
+            <div className="flex items-center justify-between p-5 border-b border-white/5 sticky top-0 bg-[#070e20] z-10">
+              <span className="text-[16px] font-bold text-[#f5a623]">
+                ⚡ 게릴라 광고 관리 포털
+              </span>
+              <button
+                onClick={() => setIsPortalOpen(false)}
+                className="w-7 h-7 rounded-full bg-[#111d38] text-[#7b8aab] flex items-center justify-center hover:bg-[#18274a] hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-6 text-sm text-[#7b8aab]">
+              관리자 UI는 통합되었습니다. (타겟 지역 선택 및 예산 설정 기능)
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
